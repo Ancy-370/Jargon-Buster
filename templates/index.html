@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jargon Buster - Public Service Tool</title>
+    <style>
+        /* === CSS from first HTML (styling kept) === */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background 0.7s ease-in-out;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            background-color: #F0F4F7; 
+            padding: 40px;
+            border-radius: 8px; 
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); 
+            border: 3px solid #1a73e8; 
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 2.2rem;
+            font-weight: 700;
+        }
+
+        .color-orange { color: #FF9933; }
+        .color-white { color: #FFFFFF; }
+        .color-green { color: #138808; }
+
+        h3.subtitle {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+            color: #000080;
+            font-weight: normal;
+            font-style: italic;
+        }
+
+        .label-left {
+            text-align: left;
+            font-weight: bold;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            font-size: 16px;
+            color: #333;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin-bottom: 20px;
+            padding: 12px;
+            font-size: 15px;
+            background-color: #FFFAFA;
+            border-radius: 25px;
+            border: 1px solid #999; 
+            resize: none;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.08); 
+        }
+
+        .button-group {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            color: white;
+            font-weight: 600;
+            transition: background-color 0.2s, box-shadow 0.2s;
+        }
+
+        .btn-blue { 
+            background-color: #1a73e8;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+        .btn-blue:hover {
+            background-color: #0c5cd8;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-green { 
+            background-color: #008000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+        }
+        .btn-green:hover {
+            background-color: #006400;
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-yellow { 
+            background-color: #ffc107; 
+            color: black; 
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fcfcfc;
+            min-width: 130px;
+            box-shadow: 0px 8px 16px rgba(0,0,0,0.15); 
+            z-index: 10;
+            border-radius: 4px;
+            overflow: hidden;
+            border: 1px solid #1a73e8; 
+        }
+
+        .dropdown-content button {
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            text-align: left;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .dropdown-content button:hover {
+            background-color: #eaf0ff;
+            color: #1a73e8;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        #voice-output-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        audio {
+            margin-top: 20px;
+            display: none;
+            width: 80%;
+            max-width: 300px;
+        }
+
+        body.bg1 {
+            background: linear-gradient(135deg, #FF9933 0%, #FFFFFF 50%, #138808 100%);
+        }
+
+        body.bg2 {
+            background: radial-gradient(circle at top left, #003366, #1a237e, #3949ab);
+        }
+
+        body.bg3 {
+            background: linear-gradient(120deg, #fbc2eb, #a6c1ee);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>
+        <span class="color-orange">JARGON</span>
+        <span class="color-white"> </span>
+        <span class="color-green">BUSTER</span>
+    </h1>
+
+    <h3 class="subtitle">For Public Service</h3>
+
+    <div class="label-left">Enter Message</div>
+    <textarea id="user_input" placeholder="Type or paste your message here..."></textarea>
+
+    <div class="button-group">
+        <button class="btn btn-blue" onclick="processText('simplify')">Explain</button>
+
+        <div class="dropdown">
+            <button class="btn btn-blue">Translate ▼</button>
+            <div class="dropdown-content">
+                <button onclick="processText('translate','Tamil')">Tamil</button>
+                <button onclick="processText('translate','Hindi')">Hindi</button>
+            </div>
+        </div>
+
+        <div class="dropdown">
+            <button class="btn btn-blue">What Next ▼</button>
+            <div class="dropdown-content">
+                <button onclick="processText('what_next','English')">English</button>
+                <button onclick="processText('what_next','Tamil')">Tamil</button>
+                <button onclick="processText('what_next','Hindi')">Hindi</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="label-left">Output</div>
+    <textarea id="output" placeholder="Your result will appear here..." readonly></textarea>
+
+    <div id="voice-output-container">
+        <button class="btn btn-green" onclick="speakText()">🔊 Voice Output</button>
+        <center><audio id="audio_player" controls></audio></center>
+    </div>
+</div>
+
+<script>
+    /* === JS from second HTML (functionality kept) === */
+    function processText(action, lang="") {
+        const userText = document.getElementById("user_input").value;
+
+        fetch("/process", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: userText, action: action, lang: lang })
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("output").value = data.result;
+        });
+    }
+
+    function speakText() {
+        const text = document.getElementById("output").value;
+
+        fetch("/voice", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: text })
+        })
+        .then(res => res.json())
+        .then(data => {
+            const audioPlayer = document.getElementById("audio_player");
+            audioPlayer.src = data.audio_url;
+            audioPlayer.style.display = "block";
+            audioPlayer.play();
+        });
+    }
+
+    function setBackground(index) {
+        document.body.classList.remove('bg1','bg2','bg3');
+        document.body.classList.add(`bg${index}`);
+    }
+
+    setBackground(1);
+</script>
+
+</body>
+</html>
